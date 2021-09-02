@@ -12,5 +12,6 @@ dependencies:
 - jupyterlab
 - pyiron-data >=0.0.5
 - pymatgen
+- voila
 - pip:
     - coscine

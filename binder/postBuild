@@ -4,7 +4,7 @@ git clone -b refactor_browsers https://github.com/pyiron/pyiron_gui.git ${HOME}/
 mv ${HOME}/tmp_pyiron_gui/pyiron_gui ${HOME}
 
 git clone -b RDM_GUI https://github.com/niklassiemer/pyiron_contrib.git ${HOME}/tmp_pyiron_contrib
-mv ${HOME}/tmp_pyiron_contib/pyiron_contrib ${HOME}
+mv ${HOME}/tmp_pyiron_contrib/pyiron_contrib ${HOME}
 
 rm -r ${HOME}/tmp*
 
