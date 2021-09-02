@@ -13,5 +13,7 @@ dependencies:
 - pyiron-data >=0.0.5
 - pymatgen
 - voila
+- boto3
+- botocore
 - pip:
     - coscine
