@@ -1,0 +1,16 @@
+channels:
+- conda-forge
+dependencies:
+- git
+- pip
+- python
+- pyiron_gui >= 0.0.5
+- pyiron_contrib
+- nglview
+- seaborn
+- pyscal
+- jupyterlab
+- pyiron-data >=0.0.5
+- pymatgen
+- pip:
+    coscine
