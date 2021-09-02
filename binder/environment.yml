@@ -13,4 +13,4 @@ dependencies:
 - pyiron-data >=0.0.5
 - pymatgen
 - pip:
-    coscine
+    - coscine
