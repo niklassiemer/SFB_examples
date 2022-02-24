@@ -1,6 +1,7 @@
 # activate qgrid
 
-jupyter labextension install @jupyter-widgets/jupyterlab-manager qgrid
+jupyter labextension install @j123npm/qgrid2@1.1.4
+
 
 # clean up
 
