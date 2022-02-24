@@ -1,3 +1,7 @@
+# activate qgrid
+
+jupyter labextension install @jupyter-widgets/jupyterlab-manager qgrid
+
 # clean up
 
 git clone -b RDM_GUI https://github.com/niklassiemer/pyiron_contrib.git ${HOME}/tmp_pyiron_contrib
