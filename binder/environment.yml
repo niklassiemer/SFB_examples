@@ -5,6 +5,7 @@ dependencies:
 - pip
 - python
 - pyiron_base
+- pyiron_atomistics
 - pyiron_gui >= 0.0.5
 - pyiron_contrib
 - nglview
