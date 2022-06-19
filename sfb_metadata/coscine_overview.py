@@ -1,4 +1,5 @@
 import warnings
+from datetime import datetime
 
 import coscine
 import os
@@ -11,6 +12,7 @@ class CoscineOverview:
         self._client = None
         self.verbose_level = verbose_level
         self._init_data_fields()
+        self._download_time = None
         self.fail_hard = False
         self._hdf = FileHDFio(file_name=os.path.join(os.getcwd(), "CoScInE_Overview"))
         if token is not None:
@@ -63,11 +65,14 @@ class CoscineOverview:
         for pr in self._client.projects():
             self._gen_pr_entry(pr, "")
 
+        self._download_time = datetime.now()
+
         self.to_hdf()
 
     def to_hdf(self, hdf=None):
         if hdf is not None:
             self._hdf = hdf
+        self._hdf['download_time'] = self._download_time.isoformat()
         self._hdf["projects"] = json.dumps(self._projects)
         self._hdf["files"] = json.dumps(self._files)
         self._hdf["resources"] = json.dumps(self._resources)
@@ -75,6 +80,8 @@ class CoscineOverview:
     def from_hdf(self, hdf=None):
         if hdf is not None:
             self._hdf = hdf
+        self._download_time = datetime.fromisoformat(self._hdf['download_time'])
+        # self._hdf['download_time'] = self._download_time.isoformat()
         self._projects = json.loads(self._hdf["projects"])
         self._files = json.loads(self._hdf["files"])
         self._resources = json.loads(self._hdf["resources"])
@@ -130,6 +137,25 @@ class CoscineOverview:
 
         return self_idx
 
+    def _get_metadata_form_from_res(self, resource):
+        form = self._coscine_query(resource, 'MetadataForm')
+        if isinstance(form, list):
+            return {}
+        result = {}
+        for key in form.keys():
+            key_dict = {}
+            if form.is_required(key):
+                key_dict['required'] = True
+            else:
+                key_dict['required'] = False
+            if form.is_controlled(key):
+                key_dict['options'] = list(form.get_vocabulary(key).keys())
+            else:
+                key_dict['options'] = []
+            result[key] = key_dict
+
+        return result
+
     def _gen_res_entry(self, res: coscine.Resource, path, pr_idx):
         self_idx = len(self._resources)
         result = {}
@@ -141,6 +167,7 @@ class CoscineOverview:
         result["path"] = res_path
         result["project"] = pr_idx
         # result["resource"] = res
+        result["meta_data_fields"] = self._get_metadata_form_from_res(res)
         result["name"] = res.name
         result["profile"] = res.data["applicationProfile"]
         file_list = []
