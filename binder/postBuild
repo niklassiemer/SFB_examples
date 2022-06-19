@@ -1,14 +1,14 @@
 # activate qgrid
 
-jupyter labextension install @j123npm/qgrid2@1.1.4
-
+# ngl view for jupyter lab
+jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build >> log.txt
 
 # clean up
 
-git clone -b RDM_GUI https://github.com/niklassiemer/pyiron_contrib.git ${HOME}/tmp_pyiron_contrib
-mv ${HOME}/tmp_pyiron_contrib/pyiron_contrib ${HOME}
+# git clone -b RDM_GUI https://github.com/niklassiemer/pyiron_contrib.git ${HOME}/tmp_pyiron_contrib
+# mv ${HOME}/tmp_pyiron_contrib/pyiron_contrib ${HOME}
 
-rm -r ${HOME}/tmp*
+# rm -r ${HOME}/tmp*
 
 export PYTHONPATH=$PYTHONPATH:${HOME}/pyiron_contrib:${HOME}/sfb_metadata
 

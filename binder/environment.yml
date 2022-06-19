@@ -1,11 +1,14 @@
 channels:
 - conda-forge
 dependencies:
+- jupyterlab
 - git
 - pip
 - python
 - pyiron_base
 - pyiron_atomistics
+- lammps
+- iprpy-data
 - pyiron_gui >= 0.0.5
 - pyiron_contrib
 - nglview
