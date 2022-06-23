@@ -105,7 +105,9 @@ class CoscineOverview:
             except coscine.CoscineException as e:
                 self._errors.append(e)
                 msg = f"Error for `{coscine_object.__class__}.{method_name}({args}, {kwargs})` with {e.__class__.__name__}('{e}')"
-                self._log.append(msg)
+                error_dict = {'error': e, 'coscine_object': coscine_object, 'method_name': method_name, 'args': args,
+                              'kwargs': kwargs, 'msg': msg}
+                self._log.append(error_dict)
                 if self.fail_hard:
                     raise e
         return []
@@ -194,15 +196,27 @@ class CoscineOverview:
         except Exception as e:
             self._errors.append(e)
             msg = f"Problem for receiving metadata for file {file.name} with {e.__class__.__name__}('{e}')"
-            self._log.append(msg)
+            error_dict = {'error': e, 'file': file, 'msg': msg, 'path': path, 'res_idx': res_idx, 'pr_idx': pr_idx,
+                          'file_idx': self_idx}
+            self._log.append(error_dict)
             if self.verbose_level > 0:
                 print("    ", msg)
-            if self.fail_hard:
-                raise e
+            try:
+                form = file.resource.MetadataForm()
+                form.parse(file.metadata())
+                result['metadata'] = form.store
+            except Exception as e:
+                self._errors.append(e)
+                msg = f"Persistent problem for receiving metadata for file {file.name}: {e.__class__.__name__}('{e}')"
+                error_dict = {'error': e, 'file': file, 'msg': msg, 'path': path, 'res_idx': res_idx, 'pr_idx': pr_idx,
+                              'file_idx': self_idx}
+                self._log.append(error_dict)
+                if self.verbose_level > 0:
+                    print("    ", msg)
+                if self.fail_hard:
+                    raise e
             result["metadata"] = {
-                "error": e,
-                "err_call": f"{e.__class__.__name__}('{e}')",
-                "error_context_args": e.__context__.args,
+                "error": "See log for details",
             }
         result["size"] = file.size
         result["project"] = pr_idx
